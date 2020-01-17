@@ -1,0 +1,151 @@
+-- ----------------------------------------------------------------  필스수이브러리 
+# yum -y install cmake
+
+-- ----------------------------------------------------------------  계정
+# groupadd -g  mysql 							그룹 생성
+# useradd -d /usr/local/mysql -s /bin/false mysql 			 mysql 유저 생성
+
+-- ----------------------------------------------------------------  MySQL설치
+
+# wget https://cdn.mysql.com//Downloads/MySQL-8.0/mysql-boost-8.0.15.tar.gz
+# tar mysql-boost-8.0.15.tar.gz
+# cd mysql-boost-8.0.15
+
+# cmake  \
+ -DCMAKE_INSTALL_PREFIX=/usr/local/mysql \ 				 기본 설치 디렉터리 설정
+-DMYSQL_DATADIR=/usr/local/mysql/data \					 데이터 디렉터리 위치 설정
+-DMYSQL_USER=mysql \
+-DDEFAULT_CHARSET=utf8 \ 							 언어 설정
+-DDEFAULT_COLLATION=utf8_general_ci \ 					 서버 데이터 정렬, show collation 문을 사용하여 각 문자 집합에 사용할 수 있는 데이터 정렬
+-DWITH_EXTRA_CHARSETS=all \ 						 포함할 추가 문자 세트
+-DWITH_INNOBASE_STORAGE_ENGINE=1 \ 					 스토리지 엔진 “innobase”를 서버에 정적으로 컴파일
+-DMYSQL_UNIX_ADDR=/tmp/mysql.sock \ 					 서버가 소켓을 연결하는 unix 소켓파일 경로. 절대경로여야함.
+-DSYSCONFDIR=/usr/local/mysql  \ 						 my.cnf 파일 디렉터리
+-DMYSQL_TCP_PORT=3306 \ 							 서버가 tcp/ip 연결을 청취하는 포트 번호
+-DDOWNLOAD_BOOST=1 -DWITH_BOOST=/usr/local/mysql/boost 		boost 를 /usr/local/mysql/boost 에 다운받아라  , 다운밥은게 있으면  -DDOWNLOAD_BOOST=1  생략  하고 경로 입력
+
+
+---- mysql-boost-8.0.17.tar.gz    후아 ㅅㅂ 
+cmake3   -DCMAKE_INSTALL_PREFIX=/usr/local/mysql -DMYSQL_DATADIR=/usr/local/mysql/data -DMYSQL_USER=mysql -DDEFAULT_CHARSET=utf8 -DDEFAULT_COLLATION=utf8_general_ci -DWITH_EXTRA_CHARSETS=all -DWITH_INNOBASE_STORAGE_ENGINE=1 -DMYSQL_UNIX_ADDR=/tmp/mysql.sock -DSYSCONFDIR=/usr/local/mysql  -DMYSQL_TCP_PORT=3306  -DCMAKE_C_COMPILER=/opt/rh/devtoolset-7/root/usr/bin/gcc -DCMAKE_CXX_COMPILER=/opt/rh/devtoolset-7/root/usr/bin/g++ -DFORCE_INSOURCE_BUILD=1 -DWITH_BOOST=/usr/local/source/mysql-8.0.17/boost 
+
+
+# make &&make install
+
+# /usr/local/mysql/bin/mysql_install_db –user=mysql –datadir=/usr/local/mysql/data –basedir=/usr/local/mysql 	 mysql의 데이터베이스를 생성하며, mysql디렉터리를 설정
+
+# chown -R mysql:mysql /usr/local/mysql
+
+# cp -arp /usr/local/mysql/support-files/my-default.cnf /usr/local/mysql /my.cnf
+
+# cp -arp /usr/local/mysql/support-files/mysql.server /etc/init.d/mysqld
+
+# chmod 755 /etc/init.d/mysqld
+
+# chkconfig –add mysqld
+
+# chkconfig mysqld on
+
+-- ----------------------------------------------------------------  MySQL 패스워드 설정
+# vi /root/.mysql_secret			/root/.mysql_secret 내에 있는 임의로 할당된 root패스워드로 접속 후 패스워드 변경을 진행
+
+
+------------------------------------------------------------------------------ my.cnf
+[client]
+default-character-set = utf8
+port = 3306
+#socket = /usr/local/mysql/mysql.sock
+socket = /tmp/mysql.sock
+default-character-set = utf8
+
+[mysqld]
+port = 3306
+#socket=/usr/local/mysql/mysql.sock
+socket=/tmp/mysql.sock
+datadir=/usr/local/mysql/data
+basedir = /usr/local/mysql
+user = mysql
+#bind-address = 127.0.0.1
+key_buffer_size = 384M
+max_allowed_packet = 1M
+table_open_cache = 512
+sort_buffer_size = 2M
+read_buffer_size = 2M
+read_rnd_buffer_size = 8M
+myisam_sort_buffer_size = 64M
+thread_cache_size = 8
+query_cache_size = 32M
+
+#dns query
+skip-name-resolve
+
+#connection
+max_connections = 1000
+max_connect_errors = 1000
+wait_timeout= 1800
+
+#slow-queries
+#slow_query_log = /usr/local/mysql/data/slow-queries.log
+#long_query_time = 3
+#log-slow-queries = /usr/local/mysql/data/mysql-slow-queries.log
+
+##timestamp
+explicit_defaults_for_timestamp
+
+symbolic-links=0
+
+### log
+#log-error=/usr/local/mysql/data/mysqld.log
+pid-file=/usr/local/mysql/mysqld.pid
+
+###chracter
+character-set-client-handshake=FALSE
+init_connect = SET collation_connection = utf8_general_ci
+init_connect = SET NAMES utf8
+character-set-server = utf8
+collation-server = utf8_general_ci
+
+symbolic-links=0
+
+##Password Policy
+#validate_password_policy=LOW
+#validate_password_policy=MEDIUM
+
+
+### MyISAM Spectific options
+##default-storage-engine = myisam
+key_buffer_size = 32M
+bulk_insert_buffer_size = 64M
+myisam_sort_buffer_size = 128M
+myisam_max_sort_file_size = 10G
+myisam_repair_threads = 1
+
+
+### INNODB Spectific options
+default-storage-engine = InnoDB
+#skip-innodb
+innodb_additional_mem_pool_size = 16M
+innodb_buffer_pool_size = 1024MB
+innodb_data_file_path = ibdata1:10M:autoextend
+innodb_write_io_threads = 8
+innodb_read_io_threads = 8
+innodb_thread_concurrency = 16
+innodb_flush_log_at_trx_commit = 1
+innodb_log_buffer_size = 8M
+innodb_log_file_size = 128M
+innodb_log_files_in_group = 3
+innodb_max_dirty_pages_pct = 90
+innodb_lock_wait_timeout = 120
+
+[mysqldump]
+default-character-set = utf8
+max_allowed_packet = 16M
+
+[mysql]
+no-auto-rehash
+default-character-set = utf8
+
+[myisamchk]
+key_buffer_size = 256M
+sort_buffer_size = 256M
+read_buffer = 2M
+write_buffer = 2M
