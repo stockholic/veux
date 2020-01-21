@@ -1,0 +1,84 @@
+1. Node.js, npm 설치
+
+    Node.js는 Google의 v8엔진을 기반으로 만들어진 서버측 JavaScript 언어이자 Flatform이다. 
+    Node.js와 함께 설치되는 npm을 이용해 Vue.js 관련 도구를 설치하고 앱의 의존성 라이브러리를 관리한다.
+
+    https://nodejs.org/ko
+
+
+2.  Visual Studio Code 설치 밎 플러그인 셋팅
+    http://code.visualstudio.com
+
+
+    1) View-in-browser : html 파일을 기본 브라우져로 볼 수 있도록 한다.
+    2) vetur : Vue.js 코드에 대한 문법 강조, 코드 자동완성, 디버깅, 린팅 기능들을 제공한다.
+    3) html snippets : html 태그 조작을 빠르게 작성할 수 있도록 도와준다.
+    4) js-css-html formmatters : js, css html의 코드 자동 완성기능을 제공한다. 에디터 창에서 ctrl+sapce
+    5) vue 2 snippets : vue.js 2.0의 조작 지원과 문법 강조 기능을 제공한다.
+    6) vue-beautify : vue.js 코드에 대한 정리 배치 기능을 제공한다. 
+    7) ESLint, TSLint : 자바 스크립트 코드 스타일, 문법 체크 기능을 제공한다.
+
+
+
+    CTRL + \	화면분할
+    CTRL + `	내부에서 쉘열기
+    CTRL + <->	축소
+    CTRL + <+>	확대
+    CTRL + ALT + DOWN	멀티선택
+    CTRL + B	사이드바 보기
+    CTRL + J	하단패널 보기
+    CTRL + P	파일팔레트 보기
+    CTRL + SHIFT + P	명령팔레트 보기
+
+
+
+
+3. Chrome Browser, Extendtion Tool 설치
+    크롬 브라우져 설치후 확장 프로그램에서 Vue 검색후 vue.js devtools 설치
+
+
+4. Vue-CLI 설치
+    1) nodejs 설치
+        > node -v       버전확인
+        > npm install -g @vue/cli
+        > vue --version
+
+        npm config set proxy http://10.112.1.184:8080
+        npm config set https-proxy http://10.112.1.184:8080
+        npm config set strict-ssl false
+
+        > npm install vue-router --save
+        > npm install router.js --save
+
+         
+5. 프로젝트 생성
+    > vue create vuex-sample
+    >  Babel, Router, Vuex                      선택 후 설치
+    >  cd vuex-sample
+    > npm run serve
+
+    > vue add vuetify                           플러그인(bootstrap 과 유사)
+
+        ** 이 시스템에서 스크립트를 실행할 수 없으므로 C:\Users\SHKR\AppData\Roaming\npm\vue.ps1 파일을 로드할 수 없습니다. **
+            관리자 권한으로 VSC 를 생행 후 파워쉘에서 다음명령어 실행 > Set-ExecutionPolicy RemoteSigned
+
+
+
+
+
+6. 배포
+    > npm run build
+
+
+7. Git 설치
+    https://git-scm.com/ 
+
+     ** gitLens 플러그인 설치
+
+
+    > git config --global user.name JS Park
+    > git config --global user.email parkjjss2@gmail.com
+
+    > git remote add origin https://github.com/stockholic/veux.git
+
+    
