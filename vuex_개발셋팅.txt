@@ -43,10 +43,6 @@
         > npm install -g @vue/cli
         > vue --version
 
-        npm config set proxy http://10.112.1.184:8080
-        npm config set https-proxy http://10.112.1.184:8080
-        npm config set strict-ssl false
-
         > npm install vue-router --save
         > npm install router.js --save
 
